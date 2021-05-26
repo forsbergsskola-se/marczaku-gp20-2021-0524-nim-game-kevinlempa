@@ -63,11 +63,11 @@ public:
 
 			if (n >= 1 && n <= 3) {
 				if (n > numberOfMatches) {
-					cout << "You have removed " << numberOfMatches << " stick(s)" << endl;
+					cout << player+" removed " << numberOfMatches << " stick(s)" << endl;
 					numberOfMatches = 0;
 				}
 				else
-					cout << "You have removed " << n << " stick(s)" << endl;
+					cout << player+" removed " << n << " stick(s)" << endl;
 				numberOfMatches -= n;
 			}
 			else {
