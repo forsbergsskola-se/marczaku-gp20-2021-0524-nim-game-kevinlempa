@@ -1,69 +1,92 @@
 
 #include <iostream>
 #include <string>
+#include<limits>
 using namespace std;
 
 
 class Nim
 {
 public:
-   void Start(int numberOfMatches)
-   {
-      TwoPlayers(numberOfMatches);
-   }
-   void TwoPlayers(int numberOfMatches)
-   {
-      bool winner = false;
-      int n;
-      do
-      {
-         if (numberOfMatches > 0)
-         {
-            cout << "There are " << numberOfMatches << " sticks" << endl;
-            cout << "Player 1, pick a number between 1 and 3" << endl;
-            cin >> n;
-            if (n >= 1 && n <= 3)
-            {
-               cout << "You have removed " << n << " stick(s)" << endl;
-               numberOfMatches -= n;
-            }
-            else
-            {
-               cout << " Invalid number" << endl;
-            }
-            if (numberOfMatches < 1)
-            {
-               winner = true;
-               cout << " Player 2 wins" << endl;
-            }
-         }
-         if (numberOfMatches > 0)
-         {
-            cout << "There are " << numberOfMatches << " sticks" << endl;
-            cout << "Player 2, pick a number between 1 and 3" << endl;
-            cin >> n;
-            if (n >= 1 && n <= 3)
-            {
-               cout << "You have removed " << n << " stick(s)" << endl;
-               numberOfMatches -= n;
-            }
-            else
-            {
-               cout << " Invalid number " << endl;
-            }
-            if (numberOfMatches < 1)
-            {
-               winner = true;
-               cout << " Player 1 wins" << endl;
-            }
-         }
+	void Start()
+	{
+		char choice;
+		cout << "Would you like to play vs AI : y/n ?" << endl;
+		cin >> choice;
+		switch (choice)
+		{
+		case 'y' :
+			PlayWithAI(true);
+			break;
+		case 'n' : 
+			PlayWithAI(false);
+			break;
+		default:
+			cin.clear();
+			cin.ignore(256, '\n');
+			Start();
+		}
+	}
+	void PlayWithAI(bool ai)
+	{
 
-      } while (!winner);
-   }
+		int numberOfMatches = 24;
+		bool winner = false;
+		int n;
+		bool playerTurn = true;
+		do {
+			srand(time(NULL));
+			string player = playerTurn ? "Player 1" : "Player 2";
+			playerTurn = !playerTurn;
+			string matches = "";
+			PlayNim(numberOfMatches, ai, matches, player, n, winner, playerTurn);
+		} while (!winner);
+	}
+	void PlayNim(int& numberOfMatches,bool& ai, std::string& matches, std::string& player, int& n, bool& winner, bool playerTurn)
+	{
+		if (numberOfMatches > 0) {
+			matches = "";
+			for (int i = 0; i < numberOfMatches; i++) {
+				matches += "|";
+			}
+			cout << "There are " << numberOfMatches << " sticks" << endl;
+			cout << matches << endl;
+			cout << player + ", pick a number between 1 and 3" << endl;
+
+			if (!ai)
+				cin >> n;
+			else if (!playerTurn)
+				cin >> n;
+			else {
+				n = (rand() % 3) + 1;
+			}
+
+			if (n >= 1 && n <= 3) {
+				if (n > numberOfMatches) {
+					cout << "You have removed " << numberOfMatches << " stick(s)" << endl;
+					numberOfMatches = 0;
+				}
+				else
+					cout << "You have removed " << n << " stick(s)" << endl;
+				numberOfMatches -= n;
+			}
+			else {
+				cin.clear();
+				cin.ignore(256, '\n');
+				cout << "Invalid number, try again." << endl;
+				PlayNim(numberOfMatches, ai, matches, player, n, winner, playerTurn);
+			}
+			if (numberOfMatches < 1) {
+				winner = true;
+				player = playerTurn ? "Player 1" : "Player 2";
+				cout << player + " wins" << endl;
+			}
+		}
+	}
 };
 
 int main()
 {
-   Nim nim;
-   nim.Start(24);
+	Nim nim;
+	nim.Start();
 }
