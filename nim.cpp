@@ -37,6 +37,8 @@ public:
 		do {
 			srand(time(NULL));
 			string player = playerTurn ? "Player 1" : "Player 2";
+			if(ai)
+				player = playerTurn ? "Player 1" : "AI";
 			playerTurn = !playerTurn;
 			string matches = "";
 			PlayNim(numberOfMatches, ai, matches, player, n, winner, playerTurn);
@@ -79,6 +81,8 @@ public:
 			if (numberOfMatches < 1) {
 				winner = true;
 				player = playerTurn ? "Player 1" : "Player 2";
+				if (ai)
+					player = playerTurn ? "Player 1" : "AI";
 				cout << player + " wins" << endl;
 			}
 		}
