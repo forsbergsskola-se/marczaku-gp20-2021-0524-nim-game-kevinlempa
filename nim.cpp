@@ -5,7 +5,7 @@
 using namespace std;
 
 
-class Nim{
+class Nim {
 private:
 	void PlayNim(int& numberOfMatches, bool& ai, std::string& matches, std::string& player, int& n, bool& winner, bool playerTurn) {
 		if (numberOfMatches > 0) {
@@ -50,17 +50,17 @@ private:
 		}
 	}
 public:
-	void StartGame()
+	int StartGame()
 	{
 		char choice;
 		cout << "Would you like to play vs AI : y/n ?" << endl;
 		cin >> choice;
 		switch (choice)
 		{
-		case 'y' :
+		case 'y':
 			PlayWithAI(true);
 			break;
-		case 'n' : 
+		case 'n':
 			PlayWithAI(false);
 			break;
 		default:
@@ -68,8 +68,9 @@ public:
 			cin.ignore(256, '\n');
 			StartGame();
 		}
+		return 0;
 	}
-	void PlayWithAI(bool ai){
+	void PlayWithAI(bool ai) {
 
 		int numberOfMatches = 24;
 		bool winner = false;
@@ -78,7 +79,7 @@ public:
 		do {
 			srand(time(NULL));
 			string player = playerTurn ? "Player 1" : "Player 2";
-			if(ai)
+			if (ai)
 				player = playerTurn ? "Player 1" : "AI";
 			playerTurn = !playerTurn;
 			string matches = "";
@@ -91,5 +92,5 @@ public:
 int main()
 {
 	Nim nim;
-	nim.StartGame();
+	return nim.StartGame();
 }
